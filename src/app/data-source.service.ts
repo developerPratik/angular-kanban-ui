@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { INgxDnd, ENgxContainer, ENgxOrientation, INgxMail } from 'src/utils/app.interfaces';
+import { randomBackground } from 'src/utils/ngx.utils';
 
 
 export interface ISwimlaneDataItem {
@@ -49,7 +50,10 @@ export class DataSourceService {
           mailAddress: 'random@mail.com',
           name: 'random_bahadur',
           props: {
-            className: 'card'
+            className: 'card',
+            style: {
+              background: randomBackground()
+            }
           }
         })
       }

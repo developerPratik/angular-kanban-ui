@@ -57,4 +57,5 @@ export class NgxSwimlaneComponent implements OnInit {
     // console.log(...params);
   }
 
+ 
 }

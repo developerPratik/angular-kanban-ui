@@ -26,7 +26,10 @@ export interface INgxMail {
     name: string,
     avatar: string,
     props: {
-        className: string
+        className: string,
+        style?: {
+            [index: string]: string
+        }
     }
 }
 

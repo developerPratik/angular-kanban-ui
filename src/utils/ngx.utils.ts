@@ -15,3 +15,19 @@ export const applyDrag = (arr: any[], dragResult: any) => {
 
     return result;
 };
+
+
+export const generateItems = (count, creator) => {
+    const result = [];
+    for (let i = 0; i < count; i++) {
+        result.push(creator(i));
+    }
+    return result;
+};
+
+export const randomBackground = () => {
+
+    const cardColors = ['azure', 'beige', 'bisque', 'blanchedalmond', 'burlywood', 'cornsilk', 'gainsboro', 'ghostwhite', 'ivory', 'khaki'];
+    const rand = Math.floor((Math.random() * 10));
+    return cardColors[rand];
+};
