@@ -7,7 +7,7 @@ export const routes: Routes = [
   {
 
     path: '',
-    redirectTo: '/ngx-smooth-dnd',
+    redirectTo: '/ngx-demo',
     pathMatch: 'full'
   },
   {

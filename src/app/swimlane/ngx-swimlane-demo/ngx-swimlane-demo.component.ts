@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ContainerComponent, DraggableComponent } from 'ngx-smooth-dnd';
+import { Component } from '@angular/core';
 import { applyDrag, generateItems } from '../../../utils/ngx.utils';
+import { FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -14,46 +16,29 @@ const pickColor = () => {
   return cardColors[rand];
 };
 
+export interface IGroupInterface {
+
+  from: string,// group id
+  to: string // group id
+}
+
 @Component({
   selector: 'app-cards',
-  template: `
-		<div class="card-scene">
-			<smooth-dnd-container 
-				[orientation]="'horizontal'" 
-				(drop)="onColumnDrop($event)" 
-				[dragHandleSelector]="'.column-drag-handle'"
-			>
-				<smooth-dnd-draggable *ngFor="let column of scene.children">
-					<div [ngClass]="column.props.className">
-						<div class="card-column-header">
-							<span class="column-drag-handle">&#x2630;</span>
-							{{column.name}}
-						</div>
-						<smooth-dnd-container 
-							[groupName]="'col'"
-							(drop)="onCardDrop(column.id, $event)"
-							[getChildPayload]="getCardPayload(column.id)"
-							[dragClass]="'card-ghost'"
-							[dropClass]="'card-ghost-drop'"
-							(dragStart)="log('drag start', $event)"
-							(dragEnd)="log('drag end', $event)"
-						>
-							<smooth-dnd-draggable *ngFor="let card of column.children">
-								<div [ngClass]="card.props.className" [ngStyle]="card.props.style">
-									<p>
-										{{card.data}}
-									</p>
-								</div>
-							</smooth-dnd-draggable>
-						</smooth-dnd-container>
-					</div>
-				</smooth-dnd-draggable>
-			</smooth-dnd-container>
-    </div>
-  `,
+  templateUrl: './ngx-swimlane-demo.component.html',
   styleUrls: ['./ngx-swimlane-demo.component.scss']
 })
 export class NgxSwimlaneDemoComponent {
+
+  public selectGroupForm: FormGroup;
+
+
+  private _groupOperations: Observable<IGroupInterface[]> = new BehaviorSubject([]);
+
+  constructor(private _modalService: NgbModal) {
+
+  }
+
+  groups = ['Lorem', 'Ipsum', 'Consectetur', 'Eiusmod'];
   scene = {
     type: 'container',
     props: {
@@ -67,17 +52,21 @@ export class NgxSwimlaneDemoComponent {
         orientation: 'vertical',
         className: 'card-container'
       },
-      children: generateItems(+(Math.random() * 5000).toFixed() + 5, (j) => ({
+      children: generateItems(+(Math.random() * 50).toFixed() + 5, (j) => ({
         type: 'draggable',
         id: `${i}${j}`,
         props: {
           className: 'card',
           style: { backgroundColor: pickColor() }
         },
-        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30)
+        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30) + (j % 3 === 0 ? " pratik" : "")
       }))
     }))
   }
+
+  filteredColumn: number;
+  filter: boolean;
+  filteredData: any[];
 
   items = generateItems(500, i => ({ data: 'Draggable ' + i }))
 
@@ -107,7 +96,62 @@ export class NgxSwimlaneDemoComponent {
     }
   }
 
+
+  handleFilter(evt: any, index: number) {
+    // the value to be filtered
+    const filterValue: string = evt.target.value;
+    if (filterValue === "") {
+      this.filter = false;
+      return;
+    }
+
+    this.filter = true;
+    this.filteredColumn = index;
+
+    let data = Object.assign({}, this.scene);
+    const columns = data.children[index].children;
+
+    // rows filtered based on data string
+    this.filteredData = columns.filter(rowItem => {
+      return (rowItem.data as string).includes(filterValue);
+    });
+  }
+
   log(...params) {
     // console.log(...params);
+  }
+
+  openModal(content: HTMLElement) {
+    this._modalService.open(content).result.then(() => {
+
+      console.log("done with modals");
+    })
+
+  }
+
+  addGroup(group: string) {
+
+    console.log("adding", group);
+
+  }
+
+  openGroupAddModel(groupModalContent: HTMLElement) {
+
+
+    this._modalService.open(groupModalContent).result.then(() => {
+      console.log("ok");
+    }).catch(() => {
+      console.log("closed model");
+    })
+  }
+
+
+  openGroupSelectModal(selectGroupModalContent: HTMLElement) {
+
+    this._modalService.open(selectGroupModalContent).result.then(() => { }).
+      catch(() => {
+
+      });
+
   }
 }

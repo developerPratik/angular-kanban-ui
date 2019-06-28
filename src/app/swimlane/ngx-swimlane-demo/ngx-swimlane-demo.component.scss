@@ -9,8 +9,9 @@ body {
     margin : 0;
 }
 
-.smooth-dnd-draggable-wrapper {
 
+
+.smooth-dnd-draggable-wrapper {
     min-width: 320px !important;
 }
 
@@ -178,7 +179,7 @@ body {
 
 .demo {
     flex     : 1;
-    overflow : auto;
+    overflow : hidden;
     min-width: 0;
 }
 
@@ -302,7 +303,7 @@ body {
     margin-left : auto;
     margin-right: auto;
     margin-top  : 50px;
-    overflow-y  : auto;
+    overflow-y  : hidden;
     height      : 80vh;
 }
 
@@ -472,7 +473,80 @@ input:last-child {
 }
 
 .card-column-header {
-    font-size: 18px;
+    font-size      : 18px;
+    display        : flex;
+    flex-direction : row;
+    justify-content: space-between;
+
+
+}
+
+
+.popover-body {
+    padding: 0px !important;
+}
+
+.group-option-popover {
+    cursor: pointer;
+
+}
+
+.group-option-popover-content {
+    .popover-body {
+        padding: 0px !important;
+    }
+
+    min-width: 200px;
+    max-width: 200px;
+
+    ul {
+        list-style: none;
+        padding   : 0px !important;
+        margin    : 0px !important;
+
+        li {
+            border-radius: 0px;
+            color        : black;
+            cursor       : pointer;
+            font-size    : 1.2em;
+            margin       : 2px 0px;
+            background   : #fff;
+
+            &:hover {
+                background: #f3f3f3;
+            }
+        }
+    }
+}
+
+
+.group-add-button {
+    position: fixed;
+    z-index : 999;
+    right   : 20px;
+    top     : 50%;
+}
+
+.group-action-button-container {
+    float          : right;
+    display        : flex;
+    flex-direction : row;
+    justify-content: space;
+    right          : 5%;
+    position       : fixed;
+    z-index        : 999;
+
+    button {
+        margin-left: 10px;
+    }
+}
+
+
+.select-group-modal {
+
+    display       : flex;
+    flex-direction: column;
+
 }
 
 .column-drag-handle {

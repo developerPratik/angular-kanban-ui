@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SwimlaneModule } from './swimlane/swimlane.module';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CommonModule } from '@angular/common';
     BrowserModule,
     AppRoutingModule,
     SwimlaneModule,
-    NgxSmoothDnDModule
+    NgxSmoothDnDModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

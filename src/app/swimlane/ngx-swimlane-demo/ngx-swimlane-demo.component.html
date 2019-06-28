@@ -1,1 +1,148 @@
-<p>ngx-swimlane-demo works!</p>
+<div class="group-action-button-container">
+    <button type="button" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary">Cancel</button>
+
+</div>
+
+
+<div class="group-add-button">
+
+    <button type="button" class="btn btn-primary" (click)="openGroupAddModel(newgroupadd)">Add</button>
+
+</div>
+
+<div class="card-scene">
+    <smooth-dnd-container [orientation]="'horizontal'" (drop)="onColumnDrop($event)"
+        [dragHandleSelector]="'.column-drag-handle'">
+        <smooth-dnd-draggable *ngFor="let column of scene.children; let i = index;">
+            <div [ngClass]="column.props.className">
+                <div class="card-column-header">
+
+                    {{column.name}}
+                    <!-- <input placeholder="Search..." #filter (keyup)="handleFilter($event, i)" /> -->
+                    <span [ngbPopover]="popover" popoverTitle="Options" class="group-option-popover"
+                        [autoClose]="true">&#x2630;</span>
+                </div>
+                <smooth-dnd-container [groupName]="'col'" (drop)="onCardDrop(column.id, $event)"
+                    [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'"
+                    [dropClass]="'card-ghost-drop'" (dragStart)="log('drag start', $event)"
+                    (dragEnd)="log('drag end', $event)">
+
+                    <ng-container *ngIf="filter && filteredColumn === i;else other_content">
+                        <!-- render the filtered rows here -->
+                        <smooth-dnd-draggable *ngFor="let card of filteredData" class="animated lightSpeedIn item-wrap">
+                            <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
+                                <p>
+                                    {{card.data}}
+                                </p>
+                            </div>
+                        </smooth-dnd-draggable>
+                    </ng-container>
+
+                    <ng-template #other_content>
+                        <smooth-dnd-draggable *ngFor="let card of column.children"
+                            class="animated lightSpeedIn item-wrap">
+                            <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
+                                <p>
+                                    {{card.data}}
+                                </p>
+                            </div>
+                        </smooth-dnd-draggable>
+                    </ng-template>
+                </smooth-dnd-container>
+            </div>
+        </smooth-dnd-draggable>
+    </smooth-dnd-container>
+</div>
+
+
+<ng-template #popover style="padding: 0px !important;">
+    <div class="group-option-popover-content">
+        <ul>
+            <li (click)="openGroupSelectModal(groupselectmodal)">
+                Select Group
+            </li>
+
+            <hr />
+            <li>Order by Name</li>
+            <li>Order by Domain</li>
+            <li>Order by Frequency</li>
+            <li>Order by New Senders</li>
+            <hr />
+            <li>Show all senders</li>
+        </ul>
+    </div>
+</ng-template>
+
+<ng-template #groupSelectPopover>
+    <div class="group-select-popover">
+        <div>
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem *ngFor="let group of groups" (click)="addGroup(group)">{{group}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #newgroupadd let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create a group</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="dateOfBirth">Add a group</label>
+                <div class="input-group">
+                    <input id="newGroupName" class="form-control" placeholder="New group...">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+
+<ng-template #groupselectmodal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Select groups to add</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+
+        <div class="btn-group btn-group-toggle select-group-modal">
+
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="mailingList">
+                <label class="custom-control-label" for="mailingList">Mailing List</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="machines">
+                <label class="custom-control-label" for="machines">Machines</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="interestingPeople">
+                <label class="custom-control-label" for="interestingPeople">Intersting People</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="important">
+                <label class="custom-control-label" for="important">Important</label>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>

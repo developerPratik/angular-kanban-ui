@@ -11,6 +11,4 @@ import { Routes } from '@angular/router';
 export class AppComponent {
   title = 'angular-swimlanes';
   _appRoutes:Routes = routes;
-
-
 }

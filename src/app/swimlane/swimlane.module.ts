@@ -2,14 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxSwimlaneComponent } from './ngx-swimlane/ngx-swimlane.component';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
-import { ScrollingModule, CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NgxSwimlaneDemoComponent } from './ngx-swimlane-demo/ngx-swimlane-demo.component';
+import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [NgxSwimlaneComponent, NgxSwimlaneDemoComponent],
   imports: [
     CommonModule,
-    NgxSmoothDnDModule
+    NgxSmoothDnDModule,
+    ScrollingModule,
+    NgbPopoverModule,
+    NgbDropdownModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  providers: [
+    NgModel
   ]
 })
 export class SwimlaneModule { }
