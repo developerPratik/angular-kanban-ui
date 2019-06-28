@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { routes } from './app-routing.module';
+import { Routes } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-swimlanes';
+  _appRoutes:Routes = routes;
 }
