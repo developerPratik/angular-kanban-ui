@@ -1,5 +1,5 @@
 <div class="group-action-button-container">
-    <button type="button" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary" (click)="handleSave()">Save</button>
     <button type="button" class="btn btn-primary">Cancel</button>
 
 </div>
@@ -17,36 +17,28 @@
         <smooth-dnd-draggable *ngFor="let column of scene.children; let i = index;">
             <div [ngClass]="column.props.className">
                 <div class="card-column-header">
-
                     {{column.name}}
                     <!-- <input placeholder="Search..." #filter (keyup)="handleFilter($event, i)" /> -->
                     <span [ngbPopover]="popover" popoverTitle="Options" class="group-option-popover"
                         [autoClose]="true">&#x2630;</span>
                 </div>
                 <smooth-dnd-container [groupName]="'col'" (drop)="onCardDrop(column.id, $event)"
-                    [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'"
+                    [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'" [behaviour]="copyColumn"
                     [dropClass]="'card-ghost-drop'" (dragStart)="log('drag start', $event)"
                     (dragEnd)="log('drag end', $event)">
 
                     <ng-container *ngIf="filter && filteredColumn === i;else other_content">
                         <!-- render the filtered rows here -->
                         <smooth-dnd-draggable *ngFor="let card of filteredData" class="animated lightSpeedIn item-wrap">
-                            <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
-                                <p>
-                                    {{card.data}}
-                                </p>
-                            </div>
+                            <app-card [card]='card'></app-card>
                         </smooth-dnd-draggable>
                     </ng-container>
 
                     <ng-template #other_content>
                         <smooth-dnd-draggable *ngFor="let card of column.children"
                             class="animated lightSpeedIn item-wrap">
-                            <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
-                                <p>
-                                    {{card.data}}
-                                </p>
-                            </div>
+
+                            <app-card [card]="card"></app-card>
                         </smooth-dnd-draggable>
                     </ng-template>
                 </smooth-dnd-container>
@@ -57,6 +49,24 @@
 
 
 <ng-template #popover style="padding: 0px !important;">
+    <div class="group-option-popover-content">
+        <ul>
+            <li (click)="openGroupSelectModal(groupselectmodal)">
+                Select Group
+            </li>
+
+            <hr />
+            <li>Order by Name</li>
+            <li>Order by Domain</li>
+            <li>Order by Frequency</li>
+            <li>Order by New Senders</li>
+            <hr />
+            <li>Show all senders</li>
+        </ul>
+    </div>
+</ng-template>
+
+<ng-template #cardPopover>
     <div class="group-option-popover-content">
         <ul>
             <li (click)="openGroupSelectModal(groupselectmodal)">

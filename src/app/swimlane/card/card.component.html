@@ -1,0 +1,7 @@
+<div class='card-container {{active ? "active" : ""}}'>
+    <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
+        <p>
+            {{card.data}}
+        </p>
+    </div>
+</div>

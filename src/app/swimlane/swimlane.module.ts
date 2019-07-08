@@ -6,9 +6,14 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NgxSwimlaneDemoComponent } from './ngx-swimlane-demo/ngx-swimlane-demo.component';
 import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CardComponent } from './card/card.component';
+import { NgMultiSelectComponent } from './ng-multi-select/ng-multi-select.component';
+import { GroupContainerComponent } from './group-container/group-container.component';
+import { ScrollEventModule } from "ngx-scroll-event";
 
 @NgModule({
-  declarations: [NgxSwimlaneComponent, NgxSwimlaneDemoComponent],
+
+  declarations: [NgxSwimlaneComponent, NgxSwimlaneDemoComponent, CardComponent, NgMultiSelectComponent, GroupContainerComponent],
   imports: [
     CommonModule,
     NgxSmoothDnDModule,
@@ -16,7 +21,8 @@ import { NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgbPopoverModule,
     NgbDropdownModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ScrollEventModule
   ],
   providers: [
     NgModel

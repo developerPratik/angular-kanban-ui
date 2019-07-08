@@ -34,6 +34,8 @@ export class NgxSwimlaneDemoComponent {
 
   private _groupOperations: Observable<IGroupInterface[]> = new BehaviorSubject([]);
 
+  public copyColumn: 'copy' | 'move' = 'move';
+  
   constructor(private _modalService: NgbModal) {
 
   }
@@ -97,6 +99,15 @@ export class NgxSwimlaneDemoComponent {
   }
 
 
+  handleSave() {
+    if (this.copyColumn === 'move') {
+      this.copyColumn = 'copy';
+    }
+    else {
+      this.copyColumn = 'move';
+    }
+  }
+
   handleFilter(evt: any, index: number) {
     // the value to be filtered
     const filterValue: string = evt.target.value;
@@ -109,9 +120,7 @@ export class NgxSwimlaneDemoComponent {
     this.filteredColumn = index;
 
     let data = Object.assign({}, this.scene);
-    const columns = data.children[index].children;
-
-    // rows filtered based on data string
+    const columns = data.children[index].children;    // rows filtered based on data string
     this.filteredData = columns.filter(rowItem => {
       return (rowItem.data as string).includes(filterValue);
     });

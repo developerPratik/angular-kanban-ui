@@ -23,6 +23,7 @@
     "@angular/router": "~8.0.0",
     "@ng-bootstrap/ng-bootstrap": "^5.0.0-rc.0",
     "bootstrap": "^4.3.1",
+    "ngx-scroll-event": "^1.0.8",
     "ngx-smooth-dnd": "^0.3.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",

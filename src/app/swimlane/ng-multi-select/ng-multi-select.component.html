@@ -1,0 +1,24 @@
+<div class="card-scene">
+    <smooth-dnd-container [orientation]="'horizontal'" (drop)="onColumnDrop($event)"
+        [dragHandleSelector]="'.column-drag-handle'">
+        <smooth-dnd-draggable *ngFor="let column of scene.children; let i = index;">
+            <div [ngClass]="column.props.className" style="max-width: 320px;" detect-scroll [bottomOffset]="50"
+                [topOffset]="50" (onScroll)="handleScroll($event, i)">
+                <div class="card-column-header">
+                    <span class="column-drag-handle">&#x2630;</span>
+                    {{column.name}}
+                </div>
+                <smooth-dnd-container [groupName]="'col'" (drop)="onCardDrop(column.id, $event)"
+                    [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'"
+                    [dropClass]="'card-ghost-drop'" (dragStart)="onDragStart('drag start', $event)"
+                    (dragEnter)="onDragEnter('drag enter', $event)" (dragLeave)="onDragLeave('dragLeave', $event)"
+                    (dragEnd)="onDragStop('drag stop', $event)">
+                    <smooth-dnd-draggable *ngFor="let card of column.children">
+                        <app-card [card]="card" [active]="multiSelectItemsArray.includes(card)"
+                            (cardClickEvent)="cardMultiSelect($event)"></app-card>
+                    </smooth-dnd-draggable>
+                </smooth-dnd-container>
+            </div>
+        </smooth-dnd-draggable>
+    </smooth-dnd-container>
+</div>
