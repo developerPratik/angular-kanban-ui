@@ -10,13 +10,15 @@
                 </div>
                 <smooth-dnd-container [groupName]="'col'" (drop)="onCardDrop(column.id, $event)"
                     [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'"
+                    class="margin top"
                     [dropClass]="'card-ghost-drop'" (dragStart)="onDragStart('drag start', $event)"
                     (dragEnter)="onDragEnter('drag enter', $event)" (dragLeave)="onDragLeave('dragLeave', $event)"
                     (dragEnd)="onDragStop('drag stop', $event)">
-                    <smooth-dnd-draggable *ngFor="let card of column.children">
-                        <app-card [card]="card" [active]="multiSelectItemsArray.includes(card)"
-                            (cardClickEvent)="cardMultiSelect($event)"></app-card>
-                    </smooth-dnd-draggable>
+                        <smooth-dnd-draggable *ngFor="let card of column.children">
+                            <app-card [card]="card" [active]="multiSelectItemsArray.includes(card)"
+                                (cardClickEvent)="cardMultiSelect($event)"></app-card>
+                        </smooth-dnd-draggable>
+                   
                 </smooth-dnd-container>
             </div>
         </smooth-dnd-draggable>

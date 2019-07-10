@@ -6,6 +6,8 @@ import { Component, OnInit, Input, Output, HostListener, EventEmitter } from '@a
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
+  ngOnInit(): void {
+  }
 
   @Input('card') card: any;
 
@@ -21,21 +23,18 @@ export class CardComponent implements OnInit {
         operation: 'add'
       });
     }
-    else{
+    else {
       this.cardClickEvent.emit({
         card: this.card,
         operation: 'remove'
       });
     }
-
   }
 
   // @Output('')?
   constructor() { }
 
-  ngOnInit() {
-    console.log("initialized component");
-  }
+
 
 
 

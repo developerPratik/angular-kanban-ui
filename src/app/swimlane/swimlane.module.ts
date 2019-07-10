@@ -10,10 +10,12 @@ import { CardComponent } from './card/card.component';
 import { NgMultiSelectComponent } from './ng-multi-select/ng-multi-select.component';
 import { GroupContainerComponent } from './group-container/group-container.component';
 import { ScrollEventModule } from "ngx-scroll-event";
+import { VirtualScrollerModule } from "ngx-virtual-scroller";
+import { NgxSwimlaneVirtualizedComponent } from './ngx-swimlane-virtualized/ngx-swimlane-virtualized.component';
 
 @NgModule({
 
-  declarations: [NgxSwimlaneComponent, NgxSwimlaneDemoComponent, CardComponent, NgMultiSelectComponent, GroupContainerComponent],
+  declarations: [NgxSwimlaneComponent, NgxSwimlaneDemoComponent, CardComponent, NgMultiSelectComponent, GroupContainerComponent, NgxSwimlaneVirtualizedComponent],
   imports: [
     CommonModule,
     NgxSmoothDnDModule,
@@ -22,7 +24,9 @@ import { ScrollEventModule } from "ngx-scroll-event";
     NgbDropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    ScrollEventModule
+    ScrollEventModule,
+    ScrollingModule,
+    VirtualScrollerModule
   ],
   providers: [
     NgModel

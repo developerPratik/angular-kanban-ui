@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgxSwimlaneComponent } from './swimlane/ngx-swimlane/ngx-swimlane.component';
 import { NgxSwimlaneDemoComponent } from './swimlane/ngx-swimlane-demo/ngx-swimlane-demo.component';
 import { NgMultiSelectComponent } from './swimlane/ng-multi-select/ng-multi-select.component';
+import { NgxSwimlaneVirtualizedComponent } from './swimlane/ngx-swimlane-virtualized/ngx-swimlane-virtualized.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path: 'ngx-multi-select',
     component: NgMultiSelectComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'virtualized-list',
+    component: NgxSwimlaneVirtualizedComponent,
     pathMatch: 'full'
   }];
 

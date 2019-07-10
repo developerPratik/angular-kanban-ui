@@ -1,7 +1,6 @@
-
 import { Component, HostListener } from '@angular/core';
 import { DropResult } from 'ngx-smooth-dnd';
-import { applyDrag, generateItems } from '../../../utils/ngx.utils';
+import { applyDrag, generateItems, apply } from '../../../utils/ngx.utils';
 import { ScrollEvent } from 'ngx-scroll-event';
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -22,6 +21,7 @@ const pickColor = () => {
   styleUrls: ['./ng-multi-select.component.scss']
 })
 export class NgMultiSelectComponent {
+  public viewPortItems: any
   scene = {
     type: 'container',
     props: {
@@ -35,14 +35,14 @@ export class NgMultiSelectComponent {
         orientation: 'vertical',
         className: 'card-container'
       },
-      children: generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
+      children: generateItems(+(Math.random() * 5).toFixed(), (j) => ({
         type: 'draggable',
         id: `${i}${j}`,
         props: {
           className: 'card',
           style: { backgroundColor: pickColor() }
         },
-        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30)
+        data: `Item number ${j}`
       }))
     }))
   };
@@ -61,9 +61,12 @@ export class NgMultiSelectComponent {
 
   onColumnDrop(dropResult: DropResult) {
     const scene = Object.assign({}, this.scene);
-    scene.children = applyDrag(scene.children, dropResult);
+    const { children } = apply(scene.children, dropResult);
+    scene.children = children;
     this.scene = scene;
   }
+
+
 
   onCardDrop(columnId: string, dropResult: DropResult) {
     /**
@@ -71,6 +74,7 @@ export class NgMultiSelectComponent {
      * if not, no changes to the logic.
      * if there are elements in the array, execute the logic in a for loop
      */
+
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
 
       const scene = Object.assign({}, this.scene);
@@ -80,18 +84,27 @@ export class NgMultiSelectComponent {
       if (this.multiSelectItemsArray.length > 0) {
         const newColumn = Object.assign({}, column);
         dropResult.payload = this.multiSelectItemsArray;
-        newColumn.children = applyDrag(newColumn.children, dropResult);
+        const { children, operation } = apply(newColumn.children, dropResult);
+        newColumn.children = children;
         scene.children.splice(columnIndex, 1, newColumn);
         this.scene = scene;
+
+        if (operation === 'add') {
+          console.log('cleared the array')
+          this.multiSelectItemsArray = [];
+        }
       }
       else {
         const newColumn = Object.assign({}, column);
-        newColumn.children = applyDrag(newColumn.children, dropResult);
+        const { children, operation } = apply(newColumn.children, dropResult);
+        newColumn.children = children;
         scene.children.splice(columnIndex, 1, newColumn);
         this.scene = scene;
+        this.multiSelectItemsArray = [];
       }
 
-      this.multiSelectItemsArray = [];
+      // set the multi selection array to initial empty array
+
     }
   }
 
@@ -138,23 +151,23 @@ export class NgMultiSelectComponent {
 
   handleScroll($event: ScrollEvent, columnIndex: number) {
 
+    return;
     const scrolledColumnChildren = this.scene.children[columnIndex].children;
 
-    const columenSize = scrolledColumnChildren.length;
+    const columnSize = scrolledColumnChildren.length;
     if ($event.isReachingBottom) {
       const generatedItems = generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
         type: 'draggable',
-        id: `${columnIndex}${columenSize + j}`,
+        id: `${columnIndex}${columnSize + j}`,
         props: {
           className: 'card',
           style: { backgroundColor: pickColor() }
         },
-        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30)
+        data: `Item number ${columnSize + j}`
       }));
 
       const items = [...scrolledColumnChildren, ...generatedItems];
 
-      console.log(items);
       this.scene.children[columnIndex].children = items;
     }
 

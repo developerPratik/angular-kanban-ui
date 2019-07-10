@@ -1,0 +1,33 @@
+<div class="card-scene">
+    <smooth-dnd-container 
+        [orientation]="'horizontal'" 
+        (drop)="onColumnDrop($event)" 
+        [dragHandleSelector]="'.column-drag-handle'"
+    >
+        <smooth-dnd-draggable *ngFor="let column of scene.children">
+            <div [ngClass]="column.props.className">
+                <div class="card-column-header">
+                    <span class="column-drag-handle">&#x2630;</span>
+                    {{column.name}}
+                </div>
+                <smooth-dnd-container 
+                    [groupName]="'col'"
+                    (drop)="onCardDrop(column.id, $event)"
+                    [getChildPayload]="getCardPayload(column.id)"
+                    [dragClass]="'card-ghost'"
+                    [dropClass]="'card-ghost-drop'"
+                    (dragStart)="log('drag start', $event)"
+                    (dragEnd)="log('drag end', $event)"
+                >
+                    <smooth-dnd-draggable *ngFor="let card of column.children">
+                        <div [ngClass]="card.props.className" [ngStyle]="card.props.style">
+                            <p>
+                                {{card.data}}
+                            </p>
+                        </div>
+                    </smooth-dnd-draggable>
+                </smooth-dnd-container>
+            </div>
+        </smooth-dnd-draggable>
+    </smooth-dnd-container>
+</div>

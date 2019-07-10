@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ContainerComponent, DraggableComponent } from 'ngx-smooth-dnd';
 import { applyDrag, generateItems } from '../../../utils/ngx.utils';
-import { FormGroup } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -16,37 +14,19 @@ const pickColor = () => {
   return cardColors[rand];
 };
 
-export interface IGroupInterface {
-
-  from: string,// group id
-  to: string // group id
-}
-
 @Component({
-  selector: 'app-cards',
-  templateUrl: './ngx-swimlane-demo.component.html',
-  styleUrls: ['./ngx-swimlane-demo.component.scss']
+  selector: 'ngx-swimlane-virtualized',
+  templateUrl: './ngx-swimlane-virtualized.component.html',
+  styleUrls: ['./ngx-swimlane-virtualized.component.scss']
 })
-export class NgxSwimlaneDemoComponent {
 
-  public selectGroupForm: FormGroup;
-
-
-  private _groupOperations: Observable<IGroupInterface[]> = new BehaviorSubject([]);
-
-  public copyColumn: 'copy' | 'move' = 'move';
-
-  constructor(private _modalService: NgbModal) {
-
-  }
-
-  groups = ['Lorem', 'Ipsum', 'Consectetur', 'Eiusmod'];
+export class NgxSwimlaneVirtualizedComponent {
   scene = {
     type: 'container',
     props: {
       orientation: 'horizontal'
     },
-    children: generateItems(4, (i: number) => ({
+    children: generateItems(4, (i) => ({
       id: `column${i}`,
       type: 'container',
       name: columnNames[i],
@@ -54,23 +34,19 @@ export class NgxSwimlaneDemoComponent {
         orientation: 'vertical',
         className: 'card-container'
       },
-      children: generateItems(+(Math.random() * 50).toFixed() + 5, (j) => ({
+      children: generateItems(+(Math.random() * 400).toFixed() + 5, (j) => ({
         type: 'draggable',
         id: `${i}${j}`,
         props: {
           className: 'card',
           style: { backgroundColor: pickColor() }
         },
-        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30) + (j % 3 === 0 ? " pratik" : "")
+        data: lorem.slice(0, Math.floor(Math.random() * 150) + 30)
       }))
     }))
   }
 
-  filteredColumn: number;
-  filter: boolean;
-  filteredData: any[];
-
-  items = generateItems(500, i => ({ data: 'Draggable ' + i }))
+  items = generateItems(50, i => ({ data: 'Draggable ' + i }))
 
   onColumnDrop(dropResult) {
     const scene = Object.assign({}, this.scene);
@@ -79,7 +55,7 @@ export class NgxSwimlaneDemoComponent {
     this.scene = scene;
   }
 
-  onCardDrop(columnId, dropResult) {
+  onCardDrop(columnId: string, dropResult: any) {
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const scene = Object.assign({}, this.scene);
       const column = scene.children.filter(p => p.id === columnId)[0];
@@ -99,69 +75,7 @@ export class NgxSwimlaneDemoComponent {
     }
   }
 
-
-  handleSave() {
-    if (this.copyColumn === 'move') {
-      this.copyColumn = 'copy';
-    }
-    else {
-      this.copyColumn = 'move';
-    }
-  }
-
-  handleFilter(evt: any, index: number) {
-    // the value to be filtered
-    const filterValue: string = evt.target.value;
-    if (filterValue === "") {
-      this.filter = false;
-      return;
-    }
-
-    this.filter = true;
-    this.filteredColumn = index;
-
-    let data = Object.assign({}, this.scene);
-    const columns = data.children[index].children;    // rows filtered based on data string
-    this.filteredData = columns.filter(rowItem => {
-      return (rowItem.data as string).includes(filterValue);
-    });
-  }
-
   log(...params) {
-    // console.log(...params);
-  }
-
-  openModal(content: HTMLElement) {
-    this._modalService.open(content).result.then(() => {
-
-      console.log("done with modals");
-    })
-
-  }
-
-  addGroup(group: string) {
-
-    console.log("adding", group);
-
-  }
-
-  openGroupAddModel(groupModalContent: HTMLElement) {
-
-
-    this._modalService.open(groupModalContent).result.then(() => {
-      console.log("ok");
-    }).catch(() => {
-      console.log("closed model");
-    })
-  }
-
-
-  openGroupSelectModal(selectGroupModalContent: HTMLElement) {
-
-    this._modalService.open(selectGroupModalContent).result.then(() => { }).
-      catch(() => {
-
-      });
-
+    console.log(...params);
   }
 }
